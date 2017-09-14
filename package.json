@@ -1,0 +1,26 @@
+{
+    "name": "ws_protocol_layer",
+    "version": "1.0.0",
+    "description": "Communication protocol over WebSocket. Binary support.",
+    "main": "lib/node/ws_server.js",
+    "scripts": {
+	"test": "test/simple_test.js"
+    },
+    "repository": {
+	"type": "git",
+	"url": "git+https://github.com/Nunkiii/ws_protocol_layer.git"
+    },
+    "keywords": [
+	"WebSocket",
+	"binary"
+    ],
+    "author": "Pierre Sprimont",
+    "license": "ISC",
+    "bugs": {
+	"url": "https://github.com/Nunkiii/ws_protocol_layer/issues"
+    },
+    "homepage": "https://github.com/Nunkiii/ws_protocol_layer#readme",
+    "dependencies" : {
+	"websocket" : "*"
+    }
+}
