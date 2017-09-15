@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>File API</title>
+
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="test.css">
+
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+
+  <script src="test_utils.js"></script>
+
+  <script src="simple_test.js"></script>
+  
+  <script src="../../lib/common/event.js"> </script>
+  <script src="../../lib/common/ws.js"> </script>
+  <script src="../../lib/web/ws_client.js"> </script>
+  
+</head>
+
+<body>
+  <div id="page-wrapper" class="container-fluid">
+    
+    <h1>Sending a simple messages to the server and getting feedback</h1>
+
+    <p>
+      In this first demo, we are sending a simple message to the server with the <strong>send</strong> command. , a command <strong>simple_test</strong> whose payload is an object containing the text input content . We don't excpect a reply from the server with the simple <strong>send</strong> function. 
+      <pre>
+	button_send.addEventListener("click", function(){
+	  c.log("Info", "Sending data ["+input.value+"].");
+	  ws.send("simple_test", { text :  input.value} ).catch(function(error){
+		c.log("Error ws.send", error_message(error), "error");
+	    }).then(function(){
+		c.log('ok',"Sent message!","good");
+	    });
+	    
+	});
+
+      </pre>
+      
+    </p>
+    
+    <div class="form">
+      <div class="row">
+	<div class="col-xs-12">
+	  <div class="input-group input-group-lg">
+	    <input class="form-control input-lg" type="text" id="input" placeholder="Enter some text..."></input>
+	    <span class="input-group-btn">
+	      <button class="btn btn-lg btn-primary" id="button_send"> Send without reply</button>
+	    </span>
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    
+    <h1>Console</h1>
+    
+    <div class="console" id="console"></div>
+    <p>
+      The server will answer to the <i>simple_test</i> command with a specific function handler. Message handlers functions are stored in groups (that can be viewed as plugins). When no group name is given to the function <strong>install_mod</strong>, function handlers are attached to the default "namespace" <i>0</i> group.
+    </p>
+    <p>
+      Each function handler's <i>this</i> value is set to the <i>websocket</i> class. Its first argument is the message object containing the data sent from the client.
+    </p>
+
+    <pre>
+      var ws=new ws_mod.server(http_server);
+
+      var simple_test_handlers={
+
+          simple_test : function(msg){	
+             var data=msg.data; 
+	     this.send("server_test_message1",{ text : "Test data received [" + data.text+ "]"});
+	
+          },
+
+          simple_test_with_reply : function(msg, reply){
+             reply({}, [{ name : "test", data : data}]);
+          }
+      };
+
+      ws.install_mod(simple_test_handlers);
+
+      http_server.listen(1234);
+
+    </pre>
+
+    The object <i>simple_test_handlers</i> declares 2 message handlers : <i>simple_test</i> and <i>simple_test_reply</i> and provide 
+  </div>
+  
+</body>
+</html>
+

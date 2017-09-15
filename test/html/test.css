@@ -1,0 +1,36 @@
+.console{
+    width: 100%;
+    border: 1px solid grey;
+    padding: 1em;
+}
+
+.console > div{
+    width: 100%;
+    padding-top: .5em;
+}
+
+.console > div > strong {
+}
+.console > div > span {
+    position: absolute;
+    left: 0px;
+    margin-left: 10em;
+    color: grey;
+}
+
+.error > strong {
+    color: red;
+}
+
+.good > strong {
+    color: green;
+}
+
+.outside > strong {
+    color: blue;
+}
+
+
+.error > span {
+    font-weight: bold;
+}
