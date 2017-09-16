@@ -16,15 +16,15 @@ var simple_test_handlers={
 
     simple_test : function(msg){
 	
-	var data=msg.data; 
-	this.send("server_test_message1",{ text : "Test data received [" + data.text+ "]"});
+	this.send("server_test_message1",{ text : "Test data received [" + msg.data.text+ "]"});
 	
     },
 
     simple_test_with_reply : function(msg, reply){
-	reply({}, [{ name : "test", data : data}]);
+	
+	reply({ text : "Hello from server! Data received : ["+msg.data.text+"]"});
     }
-
+    
 };
 
 

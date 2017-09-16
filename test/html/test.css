@@ -1,20 +1,103 @@
-.console{
+body {
+  margin: 0;
+}
+
+.grid{
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 15px 0;
+    height: 100vh;
+}
+header {
+  grid-column: 1;
+  grid-row: 1
+}
+
+.live_test {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.tutorial {
+  grid-column: 1;
+  grid-row: 3;
+  overflow: auto;
+}
+
+footer {
+  grid-column: 1;
+  grid-row: 4;
+  border-top: 1px solid #050505;
+  margin-top: 1em;
+  padding-right: 1em;
+  text-align: right;
+}
+
+@media only screen and (orientation: landscape) {
+  .grid {
+    grid-template-columns: 2fr 2fr;
+    grid-template-rows: 2fr 20fr 1fr;
+  }
+  .tutorial {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .live_test {
+      grid-column: 2;
+      grid-row: 2;
+  }
+  header {
+      grid-column: 1 / span 2;
+      grid-row: 1;
+  }
+  footer {
+      grid-column: 1 / span 2;
+      grid-row: 3;
+  }
+}
+
+
+.live_test > div{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.live_test > div > div{
+    padding : 1em;
+}
+.test1{
+    flex: 0 1 auto;
     width: 100%;
-    border: 1px solid grey;
+}
+.test2{
+    flex: 0 1 auto;
+    width: 100%;
+}
+
+.console_container {
+    flex: 2 1 auto;
+    width: 100%;
+}
+.console {
     padding: 1em;
+    border: 1px solid #ddd;
+    max-height: 50vh;
+    overflow-y: auto;
+
 }
 
 .console > div{
     width: 100%;
     padding-top: .5em;
+    border-bottom: 1px solid #eee;
 }
 
 .console > div > strong {
+    display: inline-block;
 }
 .console > div > span {
-    position: absolute;
-    left: 0px;
-    margin-left: 10em;
     color: grey;
 }
 
