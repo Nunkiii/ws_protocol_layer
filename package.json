@@ -22,5 +22,7 @@
     "homepage": "https://github.com/Nunkiii/ws_protocol_layer#readme",
     "dependencies" : {
 	"websocket" : "*"
-    }
+    },
+    
+    "x" : "cat common/event.js common/ws.js web/ws_client.js | ../../jsmin/jsmin > ws_protocol.min.js"
 }
