@@ -6,8 +6,9 @@ var simple_test_pack = {
 	c.log("Server message 1", msg.data.text, "outside");
     },
     
-    server_test_message2 : function(data){
-	c.log("Server message 2", data.text, "outside");
+    server_test_message2 : function(msg){
+	var data=msg.data;
+	c.log("Client " + data.type, (data.type=="join") ? data.origin : data.code + " " + data.desc, "outside");
     }
     
 };
@@ -18,10 +19,15 @@ window.addEventListener("load", function(){
     var button_send=document.getElementById("button_send");
     var button_query=document.getElementById("button_query");
     var console_div=document.getElementById("console");
+
+    		
+    function load_home() {
+	document.getElementById("content").innerHTML='<object type="text/html" data="home.html" ></object>';
+    }
     
     c=new console_widget(console_div);
     
-    c.log("Status","Creating websocket");
+    c.log("Info","Creating websocket","good");
     
     var ws=new ws_client.client({port : 1234});
 
@@ -32,14 +38,14 @@ window.addEventListener("load", function(){
     });
     
     ws.on("open", function(){
-	c.log("Info","connected to " +  ws.url);
+	c.log("Info","connected to " +  ws.url, "good");
 
 	button_send.addEventListener("click", function(){
-	    c.log("Info", "Sending data ["+input.value+"].");
+	    c.log("Info", "Sending data ["+input.value+"].", "good");
 	    ws.send("simple_test", { text :  input.value} ).catch(function(error){
 		c.log("Error ws.send", error_message(error), "error");
 	    }).then(function(){
-		c.log('ok',"Sent message!","good");
+		c.log('Info',"Sent message!","good");
 	    });
 	    
 	});
