@@ -1,64 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-	<meta charset="utf-8">
-	<title>Mongo+Ws binary test</title>
+  <meta charset="utf-8">
+  <title>Mongo+Ws binary test</title>
+  
+  <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  
+  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  
+  <!-- <script src="../../lib/ws_protocol.min.js"> </script>
+    -->
+  <script src="../../lib/common/event.js"> </script>
+  <script src="../../lib/common/ws.js"> </script>
+  <script src="../../lib/web/ws_client.js"> </script>
+  <script src="mongo_binary_test.js"> </script>
+  
+  <style>
+    .container-fluid{
+      padding: 2rem;
+    }
+  </style>
 	
-	<link rel="stylesheet" href="bootstrap.min.css">
-	
-	<script src="jquery.min.js"></script>
-	<script src="bootstrap.min.js"></script>
-	
-	<!-- <script src="../../lib/ws_protocol.min.js"> </script>
-	   -->
-	<script src="../../lib/common/event.js"> </script>
-	<script src="../../lib/common/ws.js"> </script>
-	<script src="../../lib/web/ws_client.js"> </script>
-	<script src="mongo_binary_test.js"> </script>
-
-	<style>
-	 .container-fluid{
-	     padding: 2rem;
-	     
-	 }
-	</style>
-	
-    </head>
-    <body>
-	<div>
-	    <div class="container-fluid">
-		<h1>Mongo binary test</h1>
-		<p>
-		    <strong>Select an image file to upload to DB</strong>. The binary file data (an image) will be transfered trought the WebSocket to the server, saved in MongoDb, retrieved immediately and sent back as a reply.
-		</p>
-		
-		<input type="file" id="fileInput"></input>
-	    </div>
-
-	    <div class="container-fluid">
-	    <div class="row">
-		<div class="col-md-6">
-		    <strong>Upload</strong> <progress id="upload"></progress>
-		</div>
-		<div class="col-md-6">
-		    <strong>Download</strong> <progress id="download"></progress>
-		</div>
-	    </div>
-	    </div>
-
-	    <div class="container-fluid">
-	    <div class="row">
-		<div class="col-md-3">
-		    <ul id="image_list" class="list-group"></ul>
-		</div>
-		<div class="col-md-9">
-		    <h3 id="image_name"></h3>
-		    <img id="image" style="width:100%"></img>
-		</div>
-	    </div>
-	    </div>
-		
+  <body>
+    <div>
+      <div class="container-fluid">
+	<h1>Mongo binary test</h1>
+	<p>
+	  <strong>Select an image file to upload to DB</strong>. The
+	  binary file data (an image) will be transfered trought the
+	  WebSocket to the server, saved in MongoDb, retrieved
+	  immediately and sent back as a reply.
+	  
+	  <input type="file" id="fileInput"></input>
+      </div>
+      
+      <div class="container-fluid">
+	<div class="row">
+	  <div class="col-md-6">
+	    <strong>Upload</strong> <progress id="upload"></progress>
+	  </div>
+	  <div class="col-md-6">
+	    <strong>Download</strong> <progress id="download"></progress>
+	  </div>
 	</div>
-	
-    </body>
-</html>
+      </div>
+      
+      <div class="container-fluid">
+	<div class="row">
+	  <div class="col-md-3">
+	    <ul id="image_list" class="list-group"></ul>
+	  </div>
+	  <div class="col-md-9">
+	    <h3 id="image_name"></h3>
+	    <img id="image" style="width:100%"></img>
+	  </div>
+	</div>
+      </div>
+      
+    </div>
+  
