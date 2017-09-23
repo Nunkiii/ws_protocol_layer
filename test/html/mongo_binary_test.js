@@ -5,13 +5,24 @@ window.onload = function() {
 	console.log("In ("+e.type+") for ("+e.target+")" + e.filename + "["+e.lineno+","+e.colno+"]: "+e.message);
     }
     
-    var ws=new ws_client.client({port : 1234});
+    var ws=new ws_web.server(); 
+    //var wk=ws.worker;
 
-    ws.on("error",function(e){
+
+    ws.install_mod({
+	allo : function(msg, reply){
+	    reply({ tu : " veux quoi?"});
+	}
+	
+    });
+
+    var wsc=ws.create_client({port : 1234});
+    
+    wsc.on("error",function(e){
 	console.log("E=" +e + " DBG: " + debug(e));
     });
     
-    ws.on("open", function(){
+    wsc.on("open", function(){
 	console.log("ws opened to " +  ws.url);
 
 	var fileInput = document.getElementById('fileInput');
@@ -38,7 +49,7 @@ window.onload = function() {
 	//Get an image from mongodb
 	
 	function get_image(id){
-	    ws.query("get_image", { image_id : id}, function(msg){
+	    wsc.query("get_image", { image_id : id}, function(msg){
 		var data=msg.bin_data.objects[0].data;
 		//console.log("BinTest reply received "+msg.bin_data.objects[0].name +"bytes : " + data.byteLength);
 		display_image(data);
@@ -57,7 +68,7 @@ window.onload = function() {
 	function display_image_list(){
 	    image_list.innerHTML="";
 
-	    ws.query("image_list", {}, function(reply){
+	    wsc.query("image_list", {}, function(reply){
 		//console.log("Reply " + JSON.stringify(reply.data.images, null, 4));
 		
 		reply.data.images.forEach(function(img){
@@ -89,7 +100,7 @@ window.onload = function() {
 		
 		console.log("Sending data length " + ab.byteLength);
 		
-		ws.query("send_image", { test : "any UTF json here..."}, [{ name: file.name , data : ab }], function(msg){
+		wsc.query("send_image", { test : "any UTF json here..."}, [{ name: file.name , data : ab }], function(msg){
 		    var data=msg.bin_data.objects[0].data;
 		    console.log("BinTest reply received "+msg.bin_data.objects[0].name +"bytes : " + data.byteLength);
 		    download.value=1;
@@ -112,6 +123,10 @@ window.onload = function() {
 	
     });
     
-    ws.create().catch(function(e){debug(e);});
+    wsc.connect()
+	.then(function(){})
+	.catch(function(e){
+	    debug(e);
+	});
 
 }

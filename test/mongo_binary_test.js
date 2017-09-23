@@ -30,9 +30,16 @@ var mod_pack={
     },
 
     get_image : function(msg, reply){
+	var client=this;
+	
 	testc.findOne({_id : mongo.ObjectID(msg.data.image_id) }, { _id : 1, name : 1, bin : 1 }).then(function(doc){
+
 	    reply({ id: doc._id}, [{ name : doc.name, data : doc.bin.buffer}]);
-	    
+
+	    client.query("allo", { what : "you want?"}, function(mrep){
+		console.log("Thanks browser, you just replied " + JSON.stringify(mrep.data));
+	    });
+
 	}).catch(function(e){
 	    console.error("Mongo findOne Error ! " +e );
 	    reply({ error : e});
