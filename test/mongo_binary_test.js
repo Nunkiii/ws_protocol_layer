@@ -3,7 +3,7 @@
 "use strict";
 
 var http = require('http');
-var ws_mod=require("../lib/node/ws_server.js");
+var ws_mod=require("./ws_protocol_layer/lib/node/ws_server.js");
 var mongo_mod=require("./mongo.js");
 
 var http_server=http.createServer(function (req, res) {
@@ -29,16 +29,42 @@ var mod_pack={
 	});
     },
 
+    delete_image : function(msg, reply){
+	testc.remove( { _id : mongo.ObjectID(msg.data.id) } , true)
+	    .then(function(){
+		reply({ message : "Successfully deleted image !"});
+	    }).catch(function(e){
+		reply({ error  : "Error deleting image : " + e});
+	    });
+    },
+
+    update_image : function(msg, reply){
+	console.log("Update " + JSON.stringify(msg.data));
+	testc.update( { _id : mongo.ObjectID(msg.data.id) }, { $set : { name : msg.data.name, description : msg.data.description } } , true)
+	    .then(function(){
+		reply({ message : "Successfully updated image !"});
+	    }).catch(function(e){
+		reply({ error  : "Error image update : " + e});
+	    });
+    },
+    
     get_image : function(msg, reply){
 	var client=this;
-	
-	testc.findOne({_id : mongo.ObjectID(msg.data.image_id) }, { _id : 1, name : 1, bin : 1 }).then(function(doc){
+	var img_id=mongo.ObjectID(msg.data.image_id);
+	console.log("Looking for image  " + img_id);
+	testc.findOne({_id : img_id }, { _id : 1, name : 1, description : 1, bin : 1 }).then(function(doc){
 
-	    reply({ id: doc._id}, [{ name : doc.name, data : doc.bin.buffer}]);
-
-	    client.query("allo", { what : "you want?"}, function(mrep){
-		console.log("Thanks browser, you just replied " + JSON.stringify(mrep.data));
-	    });
+	    console.log("Got image  " + doc);
+	    if(doc){
+		reply({ id: doc._id, description : doc.description}, [{ name : doc.name,  data : doc.bin.buffer}]);
+		
+		client.query("allo", { what : "you want?"}, function(mrep){
+		    console.log("Thanks browser, you just replied " + JSON.stringify(mrep.data));
+		});
+	    }else{
+		console.log("Document not found " + img_id);
+		reply({ error : "Document not found " + img_id});
+	    }
 
 	}).catch(function(e){
 	    console.error("Mongo findOne Error ! " +e );
@@ -50,6 +76,7 @@ var mod_pack={
 
 	var data=msg.bin_data.objects[0].data;
 	var name=msg.bin_data.objects[0].name;
+	var description=msg.data.description;
 	
 	var client=this;
 
@@ -64,7 +91,7 @@ var mod_pack={
 	
 	var testc = mongo.db.collection("bintest");
 	
-	testc.insertOne({ name : name, bin : new mongo.Binary(data,mongo.Binary.SUBTYPE_BYTE_ARRAY)}).then(function(doc){
+	testc.insertOne({ name : name, description : description, bin : new mongo.Binary(data,mongo.Binary.SUBTYPE_BYTE_ARRAY)}).then(function(doc){
 	    console.log("Ok doc written!");
 	    
 
@@ -76,9 +103,11 @@ var mod_pack={
 	    // 	    console.log('Sucessfully saved!');
 	    // 	});
 		
-		//client.send("bintest_reply", {}, [doc.bin.buffer]);
-		reply({}, [{ name : name, data : doc.bin.buffer}]);
-		//reply({}, [{ name : "test", data : data}]);
+
+		//reply({}, [{ name : name, data : doc.bin.buffer}]);
+
+		reply({ inserted_id : doc._id});
+
 	    }).catch(function(e){
 		console.error("Mongo find Error ! " +e );
 		reply({ error : e});
@@ -95,7 +124,7 @@ var mod_pack={
 mongo.startup().then(function(){
     testc = mongo.db.collection("bintest");
     ws.install_mod(mod_pack);
-    http_server.listen(1234);
+    http_server.listen(7777);
 
 }).catch(function(e){console.log("Mongo startup error " + e);})
 

@@ -11,54 +11,233 @@
 	
 	<!-- <script src="../../lib/ws_protocol.min.js"> </script>
 	   -->
-	<script src="../../lib/common/event.js"> </script>
-	<script src="../../lib/common/ws.js"> </script>
-	<script src="../../lib/web/ws_client.js"> </script>
+	<script src="lib/ws_protocol_layer_common/event.js"></script>
+	<script src="lib/ws_protocol_layer_common/ws.js"></script>
+	<script src="lib/ws_protocol_layer/ws_client.js"></script>
+
 	<script src="mongo_binary_test.js"> </script>
 
 	<style>
-	 .container-fluid{
-	     padding: 2rem;
-	     
+	 .simple_layout{
+	     display: flex;
+	     flex-direction: column;
+	     min-height: 100vh;
+	     margin: 0px;
 	 }
+	 
+	 .simple_layout > header{
+	     flex: 0 0 auto;
+	     height: 4rem;
+	     background: black;
+	     color: #eee;
+	     padding-top: 1rem;
+	     padding-left: 1rem;
+	 }
+	 .simple_layout > main{
+	     flex: 10 0 auto;
+	     display: flex;
+	     flex-direction: column;
+	 }
+	 .simple_layout > footer{
+	     flex: 0 2 auto;
+	     height: 4rem;
+	     margin-top: auto;
+	     margin-bottom: auto;
+	     background: black;
+	     color: #eee;
+	     padding: 1rem;
+	 }
+
+	 .formular{
+	     flex: 0 0 auto;
+	     padding: 1rem;
+	     margin: 1rem;
+	     border: 1px solid #ccc;
+	 }
+
+	 .browser{
+	     display: flex;
+	     flex-direction: row;
+	     flex: 1 0 auto;
+	     padding: 1rem;
+	     margin-left: 1rem;
+	     margin-right: 1rem;
+	     margin-bottom: 1rem;
+	     border: 1px solid #ccc;
+	 }
+
+	 .image_browse{
+	     flex: 0 1 auto;
+	     display: flex;
+	     flex-direction: column;
+	     max-width: 30vw;
+	 }
+	 
+	 .image_view{
+	     flex: 3 1 auto;
+	     display: flex;
+	     flex-direction: column;
+	     padding: 1rem;
+	 }
+
+	 .image_title{
+	     flex: 0 0 auto;
+	     display: flex;
+	     flex-direction: row;
+	 }
+
+	 #image_name{
+	     flex: 1 0 auto;
+	 }
+	 .image_buts{
+	     flex: 0 0 auto;
+	     margin-left: auto;
+	 }
+
+	 #image_list{
+	     height: 0rem;
+	     flex: 1 0 auto;
+	     overflow-y: auto;
+	 }
+
+	 #image{
+	     max-height: 100%;
+	     max-width: 100%;
+	 }
+
+	 #image_description{
+	     font-style: italic;
+	     font-size: 80%;
+	 }
+	 
+	 .image_container{
+	     flex: 1 0 auto;
+	     overflow: auto;
+	     height: 0rem;
+	 }
+
+	 
+	 
+ 	 @media only screen and (max-device-width: 480px) {
+	     .browser{
+		 flex-direction: column;
+	     }
+	     #image_list{
+		 height: parent;
+	     }
+	     .image_container{
+		 height: auto;
+	     }
+	     .image_browse{
+		 max-width: 100%;
+		 height: 30vh;
+	     }
+	 }
+
 	</style>
 	
     </head>
-    <body>
-	<div>
-	    <div class="container-fluid">
-		<h1>Mongo binary test</h1>
-		<p>
-		    <strong>Select an image file to upload to DB</strong>. The binary file data (an image) will be transfered trought the WebSocket to the server, saved in MongoDb, retrieved immediately and sent back as a reply.
+    <body class="simple_layout">
+	<header>
+	    <h3>NodeJS, MongoDB, WebSocket test</h3>
+	</header>
+	<main>
+	    <div class="formular">
+		<h2>Upload image to MongoDB database</h2>
+		<p class="lead">
+		    <strong>Select an image file to upload to DB</strong>. The binary file data (an image) will be splitted in short binary messages and transfered trought the WebSocket to the server, then saved in MongoDb!.
 		</p>
-		
-		<input type="file" id="fileInput"></input>
-	    </div>
-
-	    <div class="container-fluid">
-		<div class="row">
-		    <div class="col-md-6">
-			<strong>Upload</strong> <progress id="upload"></progress>
+		<div>
+		    <div class="form-group row">
+			<label for="file_input" class="col-2 col-form-label">Upload file</label>
+			<div class="col-10">
+			    <input type="file" class="form-control" id="file_input" name="file_input">
+			</div>
+			
 		    </div>
-		    <div class="col-md-6">
-			<strong>Download</strong> <progress id="download"></progress>
+		    <div class="form-group row">
+			<label for="file_description" class="col-2 col-form-label">Description</label>
+			<div class="col-10">
+			    <input type="text" class="form-control" id="file_description" name="file_description" placeholder="Write a description for your image...">
+			</div>
+		    </div>
+		    <div class="form-group row">
+			<div class="offset-2 col-9">
+			    <button id="submit_button" type="button" class="btn btn-primary">Submit</button>
+			</div>
 		    </div>
 		</div>
-	    </div>
 
-	    <div class="container-fluid">
-		<div class="row">
-		    <div class="col-md-3">
-			<ul id="image_list" class="list-group" style="max-height: 60vh; overflow-y: auto;"></ul>
+	    </div>
+	    <div class="browser">
+		<div class="image_browse">
+		    <p class="lead">
+			<strong>DB Content</strong>
+		    </p>
+		    <ul id="image_list" class="list-group"></ul>
+		</div>
+		
+		<div class="image_view image_display">
+		    <div class="image_title">
+			<span id="image_name"></span>
+			<div class="btn-group btn-group-sm image_buts" role="group" aria-label="Basic example">
+			    <button id="btn_edit" type="button" class="btn btn-outline-warning">Edit</button>
+			    <button id="btn_delete" type="button" class="btn btn-danger">Delete</button>
+			</div>
 		    </div>
-		    <div class="col-md-9">
-			<h3 id="image_name"></h3>
-			<img id="image" style="max-height: 60vh;"></img>
+		    <div class="blockquote"  id="image_description"></div>
+		    <div class="image_container">
+			<img id="image"></img>
+		    </div>
+		</div>
+		
+		
+		<div class="image_view image_edit" style="display: none;">
+		    <p class="lead"><strong>Edit image properties.</strong> Update the image metadata and commit changes to MongoDB.</p>
+		    <div>
+			<div class="form-group row">
+			    <label for="edit_name" class="col-2 col-form-label">Image name</label>
+			    <div class="col-10">
+				<input type="text" class="form-control" id="edit_name" name="edit_name">
+			    </div>
+			    
+			</div>
+			<div class="form-group row">
+			    <label for="edit_description" class="col-2 col-form-label">Description</label>
+			    <div class="col-10">
+				<input type="text" class="form-control" id="edit_description" name="edit_description" placeholder="Write a description for your image...">
+			    </div>
+			</div>
+			<div class="form-group row">
+			    <div class="offset-2 col-9">
+				<button id="cancel_edit_button" type="button" class="btn btn-warning">Cancel</button>
+				<button id="commit_edit_button" type="button" class="btn btn-success">Submit changes</button>
+			    </div>
+			</div>
+		    </div>
+		    
+		</div>
+		
+		<div class="image_view image_delete" style="display: none;">
+		    <p class="lead"><strong>Delete image.</strong> Are you sure you want to delete image from the MongoDB ?</p>
+		    <div class="form-group row">
+			<div class="">
+			    <button id="cancel_delete_button" type="button" class="btn btn-outline-warning">No</button>
+			    <button id="commit_delete_button" type="button" class="btn btn-danger">Yes, delete it !</button>
+			</div>
 		    </div>
 		</div>
 	    </div>
 	    
-	</div>
-	
+	</main>
+	<footer>
+	    <div class="container-fluid">
+		<div class="row">
+		    <strong class="col-md-2">Upload</strong> <progress class="col-md-4" id="upload"></progress>
+		    <strong class="col-md-2">Download</strong> <progress class="col-md-4" id="download"></progress>
+		</div>
+	    </div>
+	    
+	</footer>
     </body>
 </html>
