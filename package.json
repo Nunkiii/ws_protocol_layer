@@ -1,28 +1,30 @@
 {
-    "name": "ws_protocol_layer",
-    "version": "1.0.0",
-    "description": "Communication protocol over WebSocket. Binary support.",
-    "main": "lib/node/ws_server.js",
-    "scripts": {
-	"test": "test/simple_test.js"
-    },
-    "repository": {
-	"type": "git",
-	"url": "git+https://github.com/Nunkiii/ws_protocol_layer.git"
-    },
-    "keywords": [
-	"WebSocket",
-	"binary"
-    ],
-    "author": "Pierre Sprimont",
-    "license": "ISC",
-    "bugs": {
-	"url": "https://github.com/Nunkiii/ws_protocol_layer/issues"
-    },
-    "homepage": "https://github.com/Nunkiii/ws_protocol_layer#readme",
-    "dependencies" : {
-	"websocket" : "*"
-    },
-    
-    "x" : "cat common/event.js common/ws.js web/ws_client.js | ../../jsmin/jsmin > ws_protocol.min.js"
+  "name": "ws_protocol_layer",
+  "version": "1.0.0",
+  "description": "Communication protocol over WebSocket. Binary support.",
+  "main": "lib/node/ws_server.js",
+  "scripts": {
+    "test": "test/simple_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nunkiii/ws_protocol_layer.git"
+  },
+  "keywords": [
+    "WebSocket",
+    "binary"
+  ],
+  "author": "Pierre Sprimont",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nunkiii/ws_protocol_layer/issues"
+  },
+  "homepage": "https://github.com/Nunkiii/ws_protocol_layer#readme",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "mongodb": "^2.2.31",
+    "websocket": "*"
+  },
+  "x": "cat common/event.js common/ws.js web/ws_client.js | ../../jsmin/jsmin > ws_protocol.min.js"
 }

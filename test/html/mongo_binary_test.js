@@ -18,8 +18,8 @@ window.onload = function() {
     });
 
     var wsc=ws.create_client({
-	path : "ws" //need a path for accessing our websocket server
-	// ,port : 7777 Nginx is configured as reverse proxy so we connect on default http port
+	path : "", /// need a path for accessing our websocket server
+	port : 7777 /// Nginx is configured as reverse proxy so we connect on default http port
     });
 
     var image_id, first_image;
