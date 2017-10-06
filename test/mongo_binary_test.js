@@ -1,9 +1,9 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 
 "use strict";
 
 var http = require('http');
-var ws_mod=require("./ws_protocol_layer/lib/node/ws_server.js");
+var ws_mod=require("../lib/node/ws_server.js");
 var mongo_mod=require("./mongo.js");
 
 var http_server=http.createServer(function (req, res) {
