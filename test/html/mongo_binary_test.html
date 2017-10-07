@@ -2,7 +2,13 @@
 <html lang="en">
     <head>
 	<meta charset="utf-8">
-	<title>Mongo+Ws binary test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="Pierre Sprimont">
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>Node+Mongo+WS binary test</title>
 	
 	<link rel="stylesheet" href="bootstrap.min.css">
 	
@@ -145,25 +151,25 @@
 	    <div class="formular">
 		<h2>Upload image to MongoDB database</h2>
 		<p class="lead">
-		    <strong>Select an image file to upload to DB</strong>. The binary file data (an image) will be splitted in short binary messages and transfered trought the WebSocket to the server, then saved in MongoDb!.
+		    Select an image file, write a description and click submit to upload it to MongoDB. The binary image data will be splitted in binary message blocks and transfered trough the WebSocket to the server, where the data will be reconstructed and saved in MongoDb!
 		</p>
 		<div>
 		    <div class="form-group row">
-			<label for="file_input" class="col-2 col-form-label">Upload file</label>
+			<label for="file_input" class="col-2 col-form-label">Choose an image file</label>
 			<div class="col-10">
 			    <input type="file" class="form-control" id="file_input" name="file_input">
 			</div>
 			
 		    </div>
 		    <div class="form-group row">
-			<label for="file_description" class="col-2 col-form-label">Description</label>
+			<label for="file_description" class="col-2 col-form-label">Image description</label>
 			<div class="col-10">
 			    <input type="text" class="form-control" id="file_description" name="file_description" placeholder="Write a description for your image...">
 			</div>
 		    </div>
 		    <div class="form-group row">
 			<div class="offset-2 col-9">
-			    <button id="submit_button" type="button" class="btn btn-primary">Submit</button>
+			    <button id="submit_button" type="button" class="btn btn-primary">Submit!</button>
 			</div>
 		    </div>
 		</div>
