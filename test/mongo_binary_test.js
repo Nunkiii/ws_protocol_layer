@@ -21,6 +21,7 @@ var testc;
 var mod_pack={
 
     image_list : function(msg, reply){
+	console.log("image_list called with this message:"+msg)
 	testc.find( {}, { _id : 1, "name" : 1} ).toArray(function(err, docs) {
 	    if(err)
 		reply({error : err});
@@ -30,6 +31,7 @@ var mod_pack={
     },
 
     delete_image : function(msg, reply){
+	console.log("delete_image called with this message:"+msg)
 	testc.remove( { _id : mongo.ObjectID(msg.data.id) } , true)
 	    .then(function(){
 		reply({ message : "Successfully deleted image !"});
@@ -39,6 +41,7 @@ var mod_pack={
     },
 
     update_image : function(msg, reply){
+	console.log("update_image called with this message:"+msg)
 	console.log("Update " + JSON.stringify(msg.data));
 	testc.update( { _id : mongo.ObjectID(msg.data.id) }, { $set : { name : msg.data.name, description : msg.data.description } } , true)
 	    .then(function(){
@@ -49,6 +52,7 @@ var mod_pack={
     },
     
     get_image : function(msg, reply){
+	console.log("get_image called with this message:"+msg)
 	var client=this;
 	var img_id=mongo.ObjectID(msg.data.image_id);
 	console.log("Looking for image  " + img_id);
@@ -73,7 +77,8 @@ var mod_pack={
     },
     
     send_image : function(msg, reply){
-
+	console.log("send_image called with this message:"+msg)
+	
 	var data=msg.bin_data.objects[0].data;
 	var name=msg.bin_data.objects[0].name;
 	var description=msg.data.description;

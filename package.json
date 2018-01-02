@@ -4,7 +4,7 @@
   "description": "Communication protocol over WebSocket. Binary support.",
   "main": "lib/node/ws_server.js",
   "scripts": {
-    "test": "test/simple_test.js"
+    "test": "test/mongo_binary_test.js"
   },
   "repository": {
     "type": "git",
@@ -21,13 +21,15 @@
   },
   "homepage": "https://github.com/Nunkiii/ws_protocol_layer#readme",
   "dependencies": {
-    "bootstrap": "^4.0.0-beta",
+    "websocket": "^1.0.25"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.0.0-beta.3",
     "jquery": "^3.2.1",
-    "mongodb": "^2.2.31",
-    "popper.js": "^1.12.5",
+    "mongodb": "^2.2.33",
+    "popper.js": "^1.13.0",
     "prismjs": "^1.8.1",
-    "tether": "^1.4.0",
-    "websocket": "*"
+    "tether": "^1.4.0"
   },
   "x": "cat common/event.js common/ws.js web/ws_client.js | ../../jsmin/jsmin > ws_protocol.min.js"
 }
