@@ -27,14 +27,18 @@ var ws=new ws_mod.server(http_server);
 ws.install_mod(simple_test_handlers);
 
 ws.on("client_event", function(ev){
+    console.log("[" + ev.type + "]:\t " + ev.client );
     switch(ev.type){
-    case "join": console.log("Client [" + ev.type + "] : " + ev.client.toString());
-
+    case "join":
 	//Saying welcome to new client
 	ev.client.send("welcome", { text : "Welcome to our server, you are " + ev.client});
 
 	break;
-    case "leave": console.log("Client [" + ev.type + "] : " + ev.client.toString() + " ("+ev.reason+", " + ev.desc + ")"); break;
+    case "leave":
+	console.log("\tReason: "+ev.reason+", Description: " + ev.desc );
+	break;
+    default:
+
     }
 });
 
